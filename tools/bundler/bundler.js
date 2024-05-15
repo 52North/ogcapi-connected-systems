@@ -84,8 +84,8 @@ function parse_directory(name) {
 
 async function get_bundle(uri, fileName) {
     const bundledSchema = await bundle(uri, {
-        //bundleMode: 'full',
-        //externalSchemas: ["https://geojson.org/schema/Geometry.json"]
+        bundleMode: 'full',
+        externalSchemas: ["https://geojson.org/schema/Geometry.json"]
     });
 
     // fix DataStream not being included due to no usage
