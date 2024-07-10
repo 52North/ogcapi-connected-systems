@@ -6,7 +6,7 @@
     "uid": "urn:x-ogc:systems:FF465",
     "outputName": "radio"
   },
-  "ultimateFeatureOfInterest@link": {
+  "featureOfInterest@link": {
     "href": "https://data.example.org/api/systems/4578",
     "uid": "urn:x-ogc:systems:FF465"
   },
@@ -41,6 +41,7 @@
       "definition": "http://sensorml.com/ont/isa/property/Transmit_Power"
     }
   ],
+  "resultType": "record",
   "formats": [
     "application/json",
     "application/swe+json",
@@ -48,6 +49,7 @@
     "application/swe+xml",
     "application/swe+binary"
   ],
+  "live": true,
   "links": [
     {
       "rel" : "self",

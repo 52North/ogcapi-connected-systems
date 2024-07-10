@@ -10,9 +10,11 @@ get:
     - $ref: ../parameters/datetime.yaml
     - $ref: ../parameters/geom.yaml
     - $ref: ../parameters/keyword.yaml
+    - $ref: ../parameters/parentIdList.yaml
     - $ref: ../parameters/systemIdList.yaml
     - $ref: ../parameters/foiIdList.yaml
     - $ref: ../parameters/obsPropIdList.yaml
+    - $ref: ../parameters/controlPropIdList.yaml
     #- $ref: '#/components/parameters/select'
     - $ref: ../parameters/limit.yaml
   responses:
@@ -30,21 +32,14 @@ get:
       $ref: ../responses/StandardResponses.yaml#/5XX
 
 post:
-  summary: Create new deployments
+  summary: Create a deployment
   description: |-
-    Add one or more new `Deployment` resources.
-
-    Note that it is possible to create multiple resources in a single batch request.
-    In this case, several resource descriptions are provided in the content body inside a JSON array.
-    On success, the server will send a `200` response with the list of URIs of all created resources,
-    in the same order as the array in the request.
+    Add a new top-level `Deployment` resource.
   tags:
     - Deployments
   requestBody:
-    $ref: ../requests/deploymentOrArray.yaml
+    $ref: ../requests/deployment.yaml
   responses:
-    '200':
-      $ref: ../responses/resourceLinks.yaml
     '201':
       $ref: ../responses/StandardResponses.yaml#/201
     '400':

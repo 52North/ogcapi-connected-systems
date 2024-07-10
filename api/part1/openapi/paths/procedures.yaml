@@ -28,9 +28,9 @@ get:
       $ref: ../responses/StandardResponses.yaml#/5XX
 
 post:
-  summary: Create new procedures
+  summary: Create a procedure
   description: |-
-    Add one or more new `Procedure` resources.
+    Add a new `Procedure` resources.
 
     Note that it is possible to create multiple resources in a single batch request.
     In this case, several resource descriptions are provided in the content body inside a JSON array.
@@ -39,10 +39,8 @@ post:
   tags:
     - Procedures
   requestBody:
-    $ref: ../requests/procedureOrArray.yaml
+    $ref: ../requests/procedure.yaml
   responses:
-    '200':
-      $ref: ../responses/resourceLinks.yaml
     '201':
       $ref: ../responses/StandardResponses.yaml#/201
     '400':

@@ -1,0 +1,7 @@
+[requirement,model=ogc]
+====
+[%metadata]
+type:: class
+identifier:: /req/resource-events
+subject:: Web API
+====

@@ -12,7 +12,7 @@
 :fullname: Alex Robin
 :docsubtype: implementation
 :keywords: ogcdoc, OGC document, OpenAPI, REST, feature, API, system, smart system, connected system, IoT, sensorweb, ssn, sensor, actuator, transducer, sampling, platform, robot, drone, unmanned, autonomous, observation, measurement, datastream, command, control, trajectory, dynamic
-:submitting-organizations: GeoRobotix, Inc.; Botts Innovative Research, Inc.; Cesium GS, Inc.; 52° North Initiative for Geospatial Open Source Software GmbH; Pelagis Data Solutions; National Geospatial-Intelligence Agency (NGA); 
+:submitting-organizations: GeoRobotix, Inc.; Botts Innovative Research, Inc.; Cesium GS, Inc.; 52° North Initiative for Geospatial Open Source Software GmbH; Riverside Research; Pelagis Data Solutions; National Geospatial-Intelligence Agency (NGA); 
 :mn-document-class: ogc
 :mn-output-extensions: xml,html,doc,pdf
 :local-cache-only:
@@ -27,7 +27,9 @@
 :ogcapi-features-2: <<OGCAPI-Features-2, OGC API - Features - Part 2: Coordinate Reference Systems by Reference>>
 :ogcapi-features-4: <<OGCAPI-Features-4, OGC API - Features - Part 4: Create, Replace, Update and Delete>>
 :ogc-w3c-ssn: <<SOSA-SSN, Semantic Sensor Network Ontology (SOSA/SSN)>>
-:weblinks-footnote: pass:quotes[* The link relation type (`rel` property) must be set to the association name.]
+//
+:weblinks-footnote: pass:quotes[* The link relation type (`rel` property) must be set to the association name prefixed by `ogc-rel:`.]
+:part2-footnote: pass:quotes[** `DataStream` and `ControlStream` resources are defined in OGC API - Connected Systems - Part 2.]
 //
 :jsonschema-root: https://opengeospatial.github.io/ogcapi-connected-systems/api/part1/openapi/schemas
 //:jsonschema-root: ../openapi/schemas
@@ -62,6 +64,11 @@
 :ogcapi-features-1-spec-url: http://www.opengis.net/spec/ogcapi-features-1/1.0
 :ogcapi-features-4-spec-url: http://www.opengis.net/spec/ogcapi-features-4/1.0
 
+:system-resources-endpoint: <<clause-system-resources-endpoint,System resources endpoint>>
+:deployment-resources-endpoint: <<clause-deployment-resources-endpoint,Deployment resources endpoint>>
+:procedure-resources-endpoint: <<clause-procedure-resources-endpoint,Procedure resources endpoint>>
+:sf-resources-endpoint: <<clause-sf-resources-endpoint,Sampling Feature resources endpoint>>
+:property-resources-endpoint: <<clause-property-resources-endpoint,Property resources endpoint>>
 
 ////
 Make sure to complete each included document
@@ -114,7 +121,7 @@ include::sections/clause_21_requirements_class_sensorml_encoding.adoc[]
 ////
 Annexes
 ////
-include::sections/annex-abstract-test-suite.adoc[]
+//include::sections/annex-abstract-test-suite.adoc[]
 
 include::sections/annex-examples.adoc[]
 

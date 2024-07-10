@@ -2,16 +2,18 @@ parameters:
   - $ref: ../parameters/controlStreamId.yaml
 
 get:
-  summary: Retrieve a control stream schema for a given format
-  description: 
+  summary: Get the command schema
+  description: |-
+    Get the command schema for a given format.
+
+    The type of command schema returned depends on the command encoding format selected using the `commandFormat` parameter.
   tags:
-    - Control Channels
+    - Control Streams
   parameters:
     - $ref: ../parameters/cmdFormat.yaml
-    - $ref: ../parameters/schemaType.yaml
   responses:
     '200':
-      $ref: ../responses/controlStreamSchema.yaml
+      $ref: ../responses/commandSchema.yaml
     '400':
       $ref: ../../../part1/openapi/responses/StandardResponses.yaml#/400
     '401':
@@ -24,15 +26,15 @@ get:
       $ref: ../../../part1/openapi/responses/StandardResponses.yaml#/5XX
 
 put:
-  summary: Update a control stream schema
+  summary: Update the command schema
   description: |-
     After a control stream has been created and commands have been issued through it, the server may
     reject certain updates to the schema (e.g. adding or removing parameters, changing UoM, etc.).
     In this case, the `409` response code is used.
   tags:
-    - Control Channels
+    - Control Streams
   requestBody:
-    $ref: ../requests/controlStreamSchema.yaml
+    $ref: ../requests/commandSchema.yaml
   responses:
     '204':
       $ref: ../../../part1/openapi/responses/StandardResponses.yaml#/204_PUT

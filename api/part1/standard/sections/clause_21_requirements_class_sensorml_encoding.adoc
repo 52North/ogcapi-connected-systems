@@ -1,5 +1,5 @@
-:sensorml-schema-root: {jsonschema-root}/sensorml
 :sensorml-json-mediatype: application/sml+json
+
 
 [[clause-encoding-sensorml]]
 === Requirements Class "SensorML Format"
@@ -8,7 +8,7 @@
 
 include::../requirements/encoding/sensorml/requirements_class_sensorml.adoc[]
 
-The "SensorML Format" requirements class specifies how resources defined by the CS API Standard are encoded using the <<OGC-SML-JSON, SensorML JSON>> format.
+The "SensorML Format" requirements class specifies how resources defined by the CS API Standard are encoded using the SensorML JSON format defined in <<OGC-SML,SensorML 3.0>>.
 
 All feature types defined by this Standard, except `Sampling Features`, can be encoded in SensorML. The SensorML format allows the provision of more advanced metadata such as application specific identifiers and classifiers, security and legal constraints, characteristics and capabilities, contact information, attached documents, reference frames, etc.
 
@@ -16,7 +16,9 @@ All feature types defined by this Standard, except `Sampling Features`, can be e
 
 ==== Media Type
 
-The media type used for SensorML encoded resources is `{sensorml-json-mediatype}`.
+NOTE: Implementations should use *`application/vnd.ogc.sml+json`* as a preliminary media type until the <<OGC-SML,SensorML 3.0>> Standard is stable to avoid confusing future implementations accessing JSON documents from draft versions of the Standard. The media type `{sensorml-json-mediatype}` will be registered for SensorML-JSON, if and once this Standard is approved by the OGC Members. This note will be removed before publishing this Standard.
+
+The media type used for SensorML encoded resources is *`{sensorml-json-mediatype}`*.
 
 [requirement,model=ogc]
 ====
@@ -124,7 +126,7 @@ A SensorML JSON document representing a `System` resource SHALL implement the ma
 | `systemType`     | `definition`  | Use the URI or CURIE from <<system-types>> as the value.
 | `assetType`      | `classifiers` | Use a classifier with definition `cs:AssetType`, and the URI or CURIE from <<asset-types>> as the value.
 | `validTime`      | `validTime`   | -
-| `location`       | `position`    | Include location either as a GeoJSON geometry, or as part of a 3D Pose object (see <<OGC-SML-JSON>> for a description of the 3D Pose object).
+| `location`       | `position`    | Include location either as a GeoJSON geometry, or as part of a 3D Pose object (see <<OGC-SML>> for a description of the 3D Pose object).
 |====
 
 [#system-assoc-sml-mappings,reftext='{table-caption} {counter:table-num}']
@@ -134,13 +136,14 @@ A SensorML JSON document representing a `System` resource SHALL implement the ma
 | *Association Name (see <<system-assocs>>)* | *JSON Member* | *Usage*
 | `systemKind`        | `typeOf`      | Value is a weblink resolving to a `Procedure` resource.
 | `parentSystem`      | `attachedTo`  | Value is a weblink resolving to a `System` resource.
-| `subsystems`        | `links`       | Value is a weblink* resolving to a `System` collection.
-| `samplingFeatures`  | `links`       | Value is a weblink* resolving to a `Sampling Feature` collection.
-| `datastreams`       | `links`       | Value is a weblink* resolving to a `DataStream` collection.
-| `controlstreams`    | `links`       | Value is a weblink* resolving to a `ControlStream` collection.
-| `deployments`       | `links`       | Value is a weblink* resolving to a `Deployment` collection.
-| `procedures`        | `links`       | Value is a weblink* resolving to a `Procedure` collection.
-3+| {weblinks-footnote} 
+| `subsystems`        | `links`       | Value is a weblink* resolving to a {system-resources-endpoint}.
+| `samplingFeatures`  | `links`       | Value is a weblink* resolving to a {sf-resources-endpoint}.
+| `deployments`       | `links`       | Value is a weblink* resolving to a {deployment-resources-endpoint}.
+| `procedures`        | `links`       | Value is a weblink* resolving to a {procedure-resources-endpoint}.
+| `datastreams`       | `links`       | Value is a weblink* resolving to a `DataStream` resources endpoint**.
+| `controlstreams`    | `links`       | Value is a weblink* resolving to a `ControlStream` resources endpoint**.
+3+| {weblinks-footnote} +
+    {part2-footnote}
 |====
 
 [[example_sensorml_sys1]]
@@ -151,6 +154,67 @@ This is a simple description of a fixed in-situ sensor with identification and c
 [source%autofit,json]
 ----
 include::../openapi/examples/systems/thermometer-sensor-sml.json[]
+----
+=================
+
+
+
+[[clause-sensorml-deployment]]
+==== Deployment Representation
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/sensorml/deployment-schema
+
+conditions:: The server implements <<clause-deployment-features,/req/deployment-features>>.
+
+part:: A request or response body with media type `{sensorml-json-mediatype}` containing a single `Deployment` resource SHALL be valid against the JSON schema {sensorml-deployment-schema}.
+
+part:: A request or response body with media type `{sensorml-json-mediatype}` containing a collection of `Deployment` resources SHALL be valid against the JSON schema {sensorml-deployment-collection-schema}.
+====
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/sensorml/deployment-mappings
+
+A SensorML JSON document representing a `Deployment` resource SHALL implement the mappings specified in <<deployment-attribute-sml-mappings>> and <<deployment-assoc-sml-mappings>>.
+====
+
+[#deployment-attribute-sml-mappings,reftext='{table-caption} {counter:table-num}']
+.SensorML Mappings of Deployment Attributes
+[width="100%",cols="3,3,10",options="header"]
+|====
+| *Attribute Name (see <<deployment-attributes>>)* | *JSON Member* | *Usage*
+| `deploymentType` | `definition`  | Use the URI or CURIE identifying the type of deployment as the value.
+| `validTime`      | `validTime`   | -
+| `location`       | `location`    | Value is a GeoJSON geometry
+|====
+
+[#deployment-assoc-sml-mappings,reftext='{table-caption} {counter:table-num}']
+.SensorML Mappings of Deployment Associations
+[width="100%",cols="3,3,10",options="header"]
+|====
+| *Association Name (see <<deployment-assocs>>)* | *JSON Member*      | *Usage*
+| `platform`            | `platform`         | Value is a weblink resolving to a `System` resource.
+| `deployedSystems`     | `deployedSystems`  | Value is a JSON Array of `DeployedSystem` objects, each of which contains a link to a `System` resource.
+| `parentDeployment`    | `links`            | Value is a weblink* resolving to a `Deployment` resource.
+| `subdeployments`      | `links`            | Value is a weblink* resolving to a {deployment-resources-endpoint}.
+| `featuresOfInterest`  | `links`            | Value is a weblink* resolving to a `Feature` resources endpoint.
+| `samplingFeatures`    | `links`            | Value is a weblink* resolving to a {sf-resources-endpoint}.
+| `datastreams`         | `links`            | Value is a weblink* resolving to a `DataStream` resources endpoint**.
+| `controlstreams`      | `links`            | Value is a weblink* resolving to a `ControlStream` resources endpoint**.
+3+| {weblinks-footnote} +
+    {part2-footnote}
+|====
+
+[[example_sensorml_dep1]]
+.A Deployment Feature in SensorML format
+=================
+[source%autofit,json]
+----
+include::../openapi/examples/deployments/deployment-sml.json[]
 ----
 =================
 
@@ -203,7 +267,7 @@ A SensorML JSON document representing a `Procedure` resource SHALL implement the
 [width="100%",cols="3,3,10",options="header"]
 |====
 | *Association Name (see <<procedure-assocs>>)* | *JSON Member* | *Usage*
-| `implementingSystems`  | `links`       | Value is a weblink* resolving to a `System` collection.
+| `implementingSystems`  | `links`       | Value is a weblink* resolving to a {system-resources-endpoint}.
 3+| {weblinks-footnote} 
 |====
 
@@ -213,65 +277,6 @@ A SensorML JSON document representing a `Procedure` resource SHALL implement the
 [source%autofit,json]
 ----
 include::../openapi/examples/procedures/sensor-datasheet-sml.json[]
-----
-=================
-
-
-
-[[clause-sensorml-deployment]]
-==== Deployment Representation
-
-[requirement,model=ogc]
-====
-[%metadata]
-identifier:: /req/sensorml/deployment-schema
-
-conditions:: The server implements <<clause-deployment-features,/req/deployment-features>>.
-
-part:: A request or response body with media type `{sensorml-json-mediatype}` containing a single `Deployment` resource SHALL be valid against the JSON schema {sensorml-deployment-schema}.
-
-part:: A request or response body with media type `{sensorml-json-mediatype}` containing a collection of `Deployment` resources SHALL be valid against the JSON schema {sensorml-deployment-collection-schema}.
-====
-
-[requirement,model=ogc]
-====
-[%metadata]
-identifier:: /req/sensorml/deployment-mappings
-
-A SensorML JSON document representing a `Deployment` resource SHALL implement the mappings specified in <<deployment-attribute-sml-mappings>> and <<deployment-assoc-sml-mappings>>.
-====
-
-[#deployment-attribute-sml-mappings,reftext='{table-caption} {counter:table-num}']
-.SensorML Mappings of Deployment Attributes
-[width="100%",cols="3,3,10",options="header"]
-|====
-| *Attribute Name (see <<deployment-attributes>>)* | *JSON Member* | *Usage*
-| `deploymentType` | `definition`  | Use the URI or CURIE identifying the type of deployment as the value.
-| `validTime`      | `validTime`   | -
-| `location`       | `location`    | Value is a GeoJSON geometry
-|====
-
-[#deployment-assoc-sml-mappings,reftext='{table-caption} {counter:table-num}']
-.SensorML Mappings of Deployment Associations
-[width="100%",cols="3,3,10",options="header"]
-|====
-| *Association Name (see <<deployment-assocs>>)* | *JSON Member*      | *Usage*
-| `platform`            | `platform`         | Value is a weblink resolving to a `System` resource.
-| `deployedSystems`     | `deployedSystems`  | Value is a JSON Array of `DeployedSystem` objects.
-| `parentDeployment`    | `links`            | Value is a weblink* resolving to a `Deployment` resource.
-| `subdeployments`      | `links`            | Value is a weblink* resolving to a `Deployment` collection.
-| `featuresOfInterest`  | `links`            | Value is a weblink* resolving to a `Feature` collection.
-| `datastreams`         | `links`            | Value is a weblink* resolving to a `DataStream` collection.
-| `controlstreams`      | `links`            | Value is a weblink* resolving to a `ControlStream` collection.
-3+| {weblinks-footnote} 
-|====
-
-[[example_sensorml_dep1]]
-.A Deployment Feature in SensorML format
-=================
-[source%autofit,json]
-----
-include::../openapi/examples/deployments/deployment-sml.json[]
 ----
 =================
 

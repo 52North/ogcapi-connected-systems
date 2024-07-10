@@ -1,0 +1,387 @@
+
+[[clause-advanced-filtering]]
+== Requirements Class "Advanced Filtering"
+include::../requirements/query/requirements_class_advanced_filtering.adoc[]
+
+
+=== Overview
+
+This requirements class specifies additional filtering options that may be used to select only a subset of the resources in a collection.
+
+All filters defined in this section are implemented using URL query parameters and are used in addition to the ones defined in other requirements classes. In particular, all parameters defined in https://docs.ogc.org/DRAFTS/23-001r0.html#_common_resource_query_parameters[Clause 16.3] of {ogcapi-cs-1} shall also be supported on all resource types.
+
+
+
+[[clause-datastream-query-params]]
+=== DataStream Query Parameters
+
+The following query parameters are used to filter `DataStream` resources at a {datastream-resources-endpoint}.
+
+==== Phenomenon Time Filter
+
+This filter is used to select datastreams based on their `phenomenonTime` extent.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/datastream-by-phenomenontime
+
+part:: The HTTP GET operation at an {datastream-resources-endpoint} SHALL support a parameter `phenomenonTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `phenomenonTime` property of `DataStream` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Result Time Filter
+
+This filter is used to select datastreams based on their `resultTime` extent.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/datastream-by-resulttime
+
+part:: The HTTP GET operation at an {datastream-resources-endpoint} SHALL support a parameter `resultTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `resultTime` property of `DataStream` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Observed Property Filter
+
+This filter is used to select datastreams that include specific observable properties.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/datastream-by-obsprop
+
+part:: The HTTP GET operation at a {datastream-resources-endpoint} SHALL support a parameter `observedProperty` of type {filter-idlist-schema}.
+
+part:: Only datastreams that include an observed property that has one of the requested identifiers SHALL be part of the result set.
+====
+
+==== Feature of Interest Filter
+
+This filter is used to select datastreams that are associated to specific sampling features or (ultimate) features of interest.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/datastream-by-foi
+
+part:: The HTTP GET operation at an {datastream-resources-endpoint} SHALL support a parameter `foi` of type {filter-idlist-schema}.
+
+part:: Only `DataStream` resources that are associated to a feature of interest that has one of the requested identifiers SHALL be part of the result set.
+
+part:: Both sampling features and domain features of interest SHALL be included in the search.
+====
+
+
+
+[[clause-observation-query-params]]
+=== Observation Query Parameters
+
+The following query parameters are used to filter `Observation` resources at an {obs-resources-endpoint}.
+
+==== Phenomenon Time Filter
+
+This filter is used to select observations based on their `phenomenonTime` property.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/obs-by-phenomenontime
+
+part:: The HTTP GET operation at an {observation-resources-endpoint} SHALL support a parameter `phenomenonTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `phenomenonTime` property of `Observation` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+[example%unnumbered]
+====
+*Example queries to find `Observations` by `phenomenonTime`*
+[width="100%",cols="3,10"]
+|===
+| closed interval  | `{api_root}/datastreams/123/observations?phenomenonTime=2018-02-12T00:00:00Z/2018-03-18T12:31:12Z`
+| open interval | `{api_root}/datastreams/123/observations?phenomenonTime=2018-02-12T00:00:00Z/..`
+| special case `now` | `{api_root}/datastreams/123/observations?phenomenonTime=now`
+|===
+====
+
+==== Result Time Filter
+
+This filter is used to select observations based on their `resultTime` property.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/obs-by-resulttime
+
+part:: The HTTP GET operation at an {observation-resources-endpoint} SHALL support a parameter `resultTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `resultTime` property of `Observation` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+
+part:: In addition to the possible parameter values defined in {ogcapi-features-1}, the parameter SHALL also support the special value `latest`. When this special value is used, only observations with the latest result time SHALL be included in the result set.
+====
+
+[example%unnumbered]
+====
+*Example queries to find `Observations` by `resultTime`*
+[width="100%",cols="3,10"]
+|===
+| closed interval  | `{api_root}/datastreams/123/observations?resultTime=2018-02-12T00:00:00Z/2018-03-18T12:31:12Z`
+| open interval | `{api_root}/datastreams/123/observations?resultTime=2018-02-12T00:00:00Z/..`
+| special case `latest` | `{api_root}/datastreams/123/observations?resultTime=latest`
+|===
+====
+
+==== Feature of Interest Filter
+
+This filter is used to select observations that are associated to specific sampling features or ultimate features of interests.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/obs-by-foi
+
+part:: The HTTP GET operation at an {observation-resources-endpoint} SHALL support a parameter `foi` of type {filter-idlist-schema}.
+
+part:: Only `Observation` resources that are associated to a feature of interest that has one of the requested identifiers SHALL be part of the result set.
+
+part:: Both sampling features and domain features of interest SHALL be included in the search.
+====
+
+
+
+[[clause-controlstream-query-params]]
+=== ControlStream Query Parameters
+
+The following query parameters are used to filter `ControlStream` resources at a {controlstream-resources-endpoint}.
+
+==== Issue Time Filter
+
+This filter is used to select control streams based on their `issueTime` extent.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/controlstream-by-issuetime
+
+part:: The HTTP GET operation at an {controlstream-resources-endpoint} SHALL support a parameter `issueTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `issueTime` property of `CommandStream` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Execution Time Filter
+
+This filter is used to select control streams based on their `executionTime` extent.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/controlstream-by-exectime
+
+part:: The HTTP GET operation at an {controlstream-resources-endpoint} SHALL support a parameter `executionTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `executionTime` property of `CommandStream` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Controlled Property Filter
+
+This filter is used to select control streams that include specific controllable properties.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/controlstream-by-controlprop
+
+part:: The HTTP GET operation at a {controlstream-resources-endpoint} SHALL support a parameter `controlledProperty` of type {filter-idlist-schema}.
+
+part:: Only control streams that include a controlled property that has one of the requested identifiers SHALL be part of the result set.
+====
+
+==== Feature of Interest Filter
+
+This filter is used to select control streams that are associated to specific sampling features or (ultimate) features of interest.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/controlstream-by-foi
+
+part:: The HTTP GET operation at an {controlstream-resources-endpoint} SHALL support a parameter `foi` of type {filter-idlist-schema}.
+
+part:: Only `CommandStream` resources that are associated to a feature of interest that has one of the requested identifiers SHALL be part of the result set.
+
+part:: Both sampling features and domain features of interest SHALL be included in the search.
+====
+
+
+
+[[clause-command-query-params]]
+=== Command Query Parameters
+
+The following query parameters are used to filter `Command` resources at a {command-resources-endpoint}.
+
+==== Issue Time Filter
+
+This filter is used to select commands based on their `issueTime` property.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/cmd-by-issuetime
+
+part:: The HTTP GET operation at an {command-resources-endpoint} SHALL support a parameter `issueTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `issueTime` property of `Command` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Execution Time Filter
+
+This filter is used to select commands based on their `executionTime` property.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/cmd-by-exectime
+
+part:: The HTTP GET operation at an {command-resources-endpoint} SHALL support a parameter `executionTime`.
+
+part:: The parameter SHALL fulfill the same requirements as the parameter `datetime` defined in https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_datetime[Clause 7.15.4] of {ogcapi-features-1}. All references to the term “features” or “feature” in these requirements SHALL be replaced by the terms “resources” or “resource”, respectively.
+
+part:: Only the `executionTime` property of `Command` resources SHALL be used to determine the temporal extent evaluated against the parameter.
+====
+
+==== Status Filter
+
+This filter is used to select commands based on their `statusCode` property.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/cmd-by-status
+
+[.component,class=part]
+--
+The HTTP GET operation at an {command-resources-endpoint} SHALL support a parameter `statusCode` with the following characteristics (using an OpenAPI 3.0 fragment):
+
+```yaml
+include::../openapi/parameters/statusCodeList.yaml[]
+```
+--
+
+[.component,class=part]
+--
+Only `Command` resources whose current status matches one of the specified status codes SHALL be part of the result set.
+--
+====
+
+==== Sender Filter
+
+This filter is used to select commands issued by a specific sender.
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/cmd-by-sender
+
+[.component,class=part]
+--
+The HTTP GET operation at an {command-resources-endpoint} SHALL support a parameter `sender` with the following characteristics (using an OpenAPI 3.0 fragment):
+
+```yaml
+include::../openapi/parameters/senderList.yaml[]
+```
+--
+
+[.component,class=part]
+--
+Only `Command` resources issued by one of the specified senders SHALL be part of the result set.
+--
+====
+
+==== Feature of Interest Filter
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/cmd-by-foi
+
+part:: The HTTP GET operation at an {command-resources-endpoint} SHALL support a parameter `foi` of type {filter-idlist-schema}.
+
+part:: Only `Command` resources that are associated to a feature of interest that has one of the requested identifiers SHALL be part of the result set.
+
+part:: Both sampling features and domain features of interest SHALL be included in the search.
+====
+
+
+
+[[clause-commandstatus-query-params]]
+=== CommandStatus Query Parameters
+
+The following query parameters are used to filter `CommandStatus` resources at a {commandstatus-resources-endpoint}.
+
+==== StatusCode Filter
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/status-by-statuscode
+
+[.component,class=part]
+--
+The HTTP GET operation at an {commandstatus-resources-endpoint} SHALL support a parameter `statusCode` with the following characteristics (using an OpenAPI 3.0 fragment):
+
+```yaml
+include::../openapi/parameters/statusCodeList.yaml[]
+```
+--
+
+[.component,class=part]
+--
+Only `CommandStatus` resources with a status that matches one of the specified status codes SHALL be part of the result set.
+--
+====
+
+
+
+[[clause-systemevent-query-params]]
+=== SystemEvent Query Parameters
+
+The following query parameters are used to filter `SystemEvent` resources at a {systemevent-resources-endpoint}.
+
+==== Event Type Filter
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/advanced-filtering/event-by-type
+
+[.component,class=part]
+--
+The HTTP GET operation at an {systemevent-resources-endpoint} SHALL support a parameter `eventType` with the following characteristics (using an OpenAPI 3.0 fragment):
+
+```yaml
+include::../openapi/parameters/eventTypeList.yaml[]
+```
+--
+
+[.component,class=part]
+--
+Only `SystemEvent` resources with a type that matches one of the specified types SHALL be part of the result set.
+--
+====

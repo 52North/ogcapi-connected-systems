@@ -1,12 +1,12 @@
 {
   "id": "958tf25kjm2f6",
   "name": "Indoor Thermometer 001 - Living Room Temperature",
+  "outputName": "temp",
   "system@link": {
     "href": "https://data.example.org/api/systems/123",
-    "uid": "urn:x-ogc:systems:001",
-    "outputName": "temp"
+    "uid": "urn:x-ogc:systems:001"
   },
-  "ultimateFeatureOfInterest@link": {
+  "featureOfInterest@link": {
     "href": "https://data.example.org/api/collections/buildings/items/754",
     "title": "My House"
   },
@@ -29,16 +29,18 @@
       "description": "Ambient air temperature measured inside the room"
     }
   ],
+  "resultType": "measure",
   "formats": [
-    "application/om+json",
+    "application/json",
     "application/swe+json",
     "application/swe+csv",
     "application/x-protobuf"
   ],
+  "live": true,
   "links": [
     {
-      "rel" : "self",
-      "href" : "https://data.example.org/api/datastreams/958tf25kjm2f6",
+      "rel" : "observations",
+      "href" : "https://data.example.org/api/datastreams/958tf25kjm2f6/observations",
       "type" : "application/json"
     }
   ]

@@ -1,14 +1,26 @@
-[[rc_filter-advanced-filters]]
-[cols="1,4",width="90%",options="header"]
-|===
-2+|*Requirements Class*
-2+|http://www.opengis.net/spec/ogcapi-connectedsystems-1/1.0/req/advanced-filtering
-|Target type    |Web API
-|Dependency     |<<clause-api-common>>
-|Conditional
- Dependency     |<<clause-datastream-resources>>
-|Conditional
- Dependency     |<<clause-control-resources>>
-|Conditional
- Dependency     |<<clause-system-events>>
-|===
+[requirement,model=ogc]
+====
+[%metadata]
+type:: class
+identifier:: /req/advanced-filtering
+subject:: Web API
+inherit:: http://www.opengis.net/spec/ogcapi-connectedsystems-1/1.0/req/advanced-filtering
+requirement:: /req/advanced-filtering/datastream-by-phenomenontime
+requirement:: /req/advanced-filtering/datastream-by-resulttime
+requirement:: /req/advanced-filtering/datastream-by-obsprop
+requirement:: /req/advanced-filtering/datastream-by-foi
+requirement:: /req/advanced-filtering/obs-by-phenomenontime
+requirement:: /req/advanced-filtering/obs-by-resulttime
+requirement:: /req/advanced-filtering/obs-by-foi
+requirement:: /req/advanced-filtering/controlstream-by-issuetime
+requirement:: /req/advanced-filtering/controlstream-by-exectime
+requirement:: /req/advanced-filtering/controlstream-by-controlprop
+requirement:: /req/advanced-filtering/controlstream-by-foi
+requirement:: /req/advanced-filtering/cmd-by-issuetime
+requirement:: /req/advanced-filtering/cmd-by-exectime
+requirement:: /req/advanced-filtering/cmd-by-status
+requirement:: /req/advanced-filtering/cmd-by-sender
+requirement:: /req/advanced-filtering/cmd-by-foi
+requirement:: /req/advanced-filtering/status-by-statuscode
+requirement:: /req/advanced-filtering/event-by-type
+====

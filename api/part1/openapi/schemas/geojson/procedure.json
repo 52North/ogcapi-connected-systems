@@ -3,7 +3,6 @@
   "allOf": [
     { "$ref": "feature.json" },
     {
-      "geometry": null,
       "properties": {
         "geometry": {
           "type": "null"
@@ -11,13 +10,7 @@
         "properties": {
           "properties": {
             "featureType": {
-              "type": "string",
-              "enum": [
-                "http://www.w3.org/ns/sosa/ObservingProcedure",
-                "http://www.w3.org/ns/sosa/ActuationProcedure",
-                "http://www.w3.org/ns/sosa/SamplingProcedure",
-                "http://www.w3.org/ns/sosa/Procedure"
-              ]
+              "$ref": "../common/uris.json#/definitions/ProcedureTypeUris"
             }
           }
         }

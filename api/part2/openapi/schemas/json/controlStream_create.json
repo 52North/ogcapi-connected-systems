@@ -6,12 +6,12 @@
       "properties": {
         "schema": {
           "description": "Schema describing the content of commands in this control stream. The exact syntax of the schema depends on the encoding format.",
-          "$ref": "controlStreamSchema.json",
+          "$ref": "commandSchema.json",
           "writeOnly": true
         }
       },
       "required": [
-        "name"
+        "schema"
       ]
     }
   ]

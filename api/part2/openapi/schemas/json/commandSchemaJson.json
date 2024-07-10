@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "commandFormat": {
+      "type": "string",
+      "const": "application/json"
+    },
+    "parametersSchema": {
+      "$ref": "../common/sweCommonDefs.json#/definitions/AnyComponent"
+    },
+    "resultSchema": {
+      "$ref": "../common/sweCommonDefs.json#/definitions/AnyComponent"
+    },
+    "feasibilityResultSchema": {
+      "$ref": "../common/sweCommonDefs.json#/definitions/AnyComponent"
+    }
+  },
+  "required": [
+    "commandFormat", "parametersSchema"
+  ]
+}

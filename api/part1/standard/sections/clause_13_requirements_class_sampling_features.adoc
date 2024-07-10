@@ -3,7 +3,7 @@
 == Requirements Class "Sampling Features"
 
 === Overview
-include::../requirements/sampling/requirements_class_sampling_features.adoc[]
+include::../requirements/sf/requirements_class_sampling_features.adoc[]
 
 The "Sampling Features" requirements class specifies how `Sampling Feature` descriptions are provided using the CS API.
 
@@ -64,6 +64,7 @@ The sampling feature model used in the CS API also supports "sampling chains", w
 In this API, observations and commands are always associated to a `Sampling Feature`, never directly to the ultimate `Feature of Interest`. Each `Sampling Feature` resource has an association to the `sampled feature` (i.e. the feature being sampled) which can be the ultimate `Feature of Interest` or another (larger) `Sampling Feature` in the case of a sampling chain.
 
 
+[[clause-sf-resource]]
 === Sampling Feature Resource
 
 In the CS API Standard, `Sampling Feature` resources are a special kind of feature resource that implements the _http://www.w3.org/ns/sosa/Sample[sosa:Sample]_ concept.
@@ -106,46 +107,74 @@ Valid time is used when the sampling feature is not meaningful or usable outside
 |====
 | *Relation Name*           | *SOSA/SSN Property* | *Definition* | *Target Content* | *Usage*
 | `parentSystem`            | - | The `System` that created or uses this `Sampling Feature`. | A single `System` resource. | Required
-| `sampledFeature`          | `sosa:isSampleOf` | he ultimate feature of interest that is being sampled or controlled. | A single `Feature` resource. | Required
-| `relatedSamplingFeatures` | - | Other `Sampling Features` related to this `Sampling Feature` via sub-sampling. | A collection of `Sampling Feature` resources (inline or by-reference). | Optional
-| `datastreams`             | - | The `Data Streams` that contain observations of this `Sampling Feature`. | A collection of `DataStream` resources (inline or by-reference). | Optional
-| `controlstreams`          | - | The `Control Streams` that received commands impacting this `Sampling Feature`. | A collection of `ControlStream` resources (inline or by-reference). | Optional
+| `sampledFeature`          | `sosa:hasSampledFeature` | The ultimate feature of interest that is being sampled or controlled. | A single `Feature` resource. | Required
+| `relatedSamplingFeatures` | `sosa:isSampleOf` | Other `Sampling Features` related to this `Sampling Feature` via sub-sampling. | A list of `Sampling Feature` resources (inline or by-reference). | Optional
+| `datastreams`             | - | The `Data Streams` that contain observations of this `Sampling Feature`. | A list of `DataStream` resources (inline or by-reference). | Optional
+| `controlstreams`          | - | The `Control Streams` that received commands impacting this `Sampling Feature`. | A list of `ControlStream` resources (inline or by-reference). | Optional
 |====
 
 
-=== Canonical URL
 
-The CS API Standard requires that a `Sampling Feature` resource has a canonical URL through which it can be retrieved independently of its membership to any collection.
+=== Sampling Feature Canonical URL
 
-include::../requirements/sampling/req_canonical_url.adoc[]
+The CS API Standard requires that every `Sampling Feature` resource has a canonical URL.
 
-
-=== Root Collection
-
-A root collection where all `Sampling Feature` resources can be searched must be available at a CS API endpoint.
-
-include::../requirements/sampling/req_canonical_collection.adoc[]
+include::../requirements/sf/req_canonical_url.adoc[]
 
 
-=== Feature Collections
 
-`Sampling Feature` collections are identified with the feature type `sosa:Sample`.
+[[clause-sf-resources-endpoint]]
+=== Sampling Feature Resources Endpoints
 
-include::../requirements/sampling/req_collections_type.adoc[]
+==== Definition
 
-In addition to the default (mandatory) collection containing all sampling features, `Sampling Feature` resources can also be grouped into collections according to any arbitrary criteria. Any number of feature collections containing `Sampling Features` can be available at a CS API endpoint.
+A `Sampling Feature` <<clause_api_endpoints,resources endpoint>> is an endpoint exposing a set of `Sampling Feature` resources that can be further filtered using query parameters.
 
-include::../requirements/sampling/req_collections_others.adoc[]
+include::../requirements/sf/req_resources_endpoint.adoc[]
+
+<<clause-sf-query-params>> defines additional query parameters applicable to `Sampling Feature` resources endpoint.
+
+[[clause-canonical-sf-rep]]
+==== Canonical Sampling Feature Resources Endpoint
+
+The CS API Standard requires that a canonical `Sampling Feature` resources endpoint, exposing all `Sampling Feature` resources, be made available by the server.
+
+include::../requirements/sf/req_canonical_endpoint.adoc[]
+
+==== Nested Sampling Feature Resources Endpoint
+
+[requirement,model=ogc]
+====
+[%metadata]
+identifier:: /req/sf/ref-from-system
+
+part:: The server SHALL expose a {sf-resources-endpoint} at the paths defined by the URL template `{api_root}/systems/{sysId}/samplingFeatures`.
+
+part:: The `samplingFeatures` association in the parent `System` resource representation SHALL be implemented as a link to this {sf-resources-endpoint}.
+
+part:: The parameter `sysId` SHALL be the local identifier of the parent `System` resource.
+====
+
+
+
+=== Sampling Feature Collections
+
+Any number of feature collections containing `Sampling Features` can be available at a CS API endpoint, but the server must at least expose one. Members of `Sampling Feature` collections are identified with the feature type `sosa:Sample`.
+
+`Sampling Feature` resources can be grouped into collections according to any arbitrary criteria, as shown in the following examples.
 
 [example%unnumbered]
 ====
-*Examples*
+*Examples of Sampling Feature Collections*
 
 - All river sampling stations at URL `{api_root}/collections/hydro_sampling_points`
 - All satellite image footprints at URL `{api_root}/collections/img_footprints`
 
-Note that a given sampling feature can be part of multiple collections at the same time.
+_Note that a given sampling feature can be part of multiple collections at the same time._
 ====
+
+include::../requirements/sf/req_collections.adoc[]
+
 
 
 === Dynamic properties

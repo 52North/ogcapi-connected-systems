@@ -7,7 +7,7 @@ include::../requirements/procedure/requirements_class_procedure_features.adoc[]
 
 The "Procedure Features" requirements class specifies how `Procedure` descriptions are provided using the CS API.
 
-A `Procedure` resource implements the _http://www.w3.org/ns/sosa/Procedure[Procedure]_ concept defined in the <<SOSA-SSN,SSN Ontology>>. `Procedure` resources are used to provide the specifications or methodology implemented by a `System` to accomplish its task(s).
+A `Procedure` resource implements the _http://www.w3.org/ns/sosa/Procedure[Procedure]_ concept defined in the {ogc-w3c-ssn}. `Procedure` resources are used to provide the specifications or methodology implemented by a `System` to accomplish its task(s).
 
 NOTE: `Procedure` resources describe types of systems (e.g. a particular model of sensor) or procedures implemented by systems (e.g. followed by a human operator or programmed into a piece of equipment), while `System` resources describe system instances (e.g. a sensor device, a human observer). Several `System` instances can be associated to the same `Procedure`.
 
@@ -49,7 +49,6 @@ All `Procedure` resource representations provided by encoding requirements class
 | `name`             | `rdfs:label` | The human readable name of the procedure | String | Required
 | `description`      | `rdfs:comment` | A human readable description for the procedure | String | Optional
 | `procedureType`    | `rdfs:type` | The type of procedure (see <<procedure-types>>) | URI | Required
-| `documentType`     | - | The type of information provided by the procedure (see <<document-types>>) | URI | Optional
 | `validTime`        | - | The validity period of the procedure description. | DateTime | Optional
 |====
 
@@ -60,27 +59,23 @@ NOTE: The validity time period of a `Procedure` description starts on the date t
 [width="100%",cols="5,5,10,10,3",options="header"]
 |====
 | *Name* | *SOSA/SSN Property* | *Definition* | *Target Content* | *Usage*
-| `implementingSystems` | `implementedBy` | The `Systems` that implement the `Procedure`. | A Collection of `System` resources (inline or by-reference). | Optional
+| `implementingSystems` | `implementedBy` | The `Systems` that implement the `Procedure`. | A list of `System` resources (inline or by-reference). | Optional
 |====
 
 [#procedure-types,reftext='{table-caption} {counter:table-num}']
 .Procedure Types
 [width="100%",cols="5,10,5,5,10",options="header"]
 |====
-| *Procedure Type* | *URI* | *CURIE* | *Implemented By* | *Usage*
-| Observing        | http://www.w3.org/ns/sosa/ObservingProcedure  | sosa:ObservingProcedure | Sensor   | A sensor datasheet or an observation method.
-| Actuating        | http://www.w3.org/ns/sosa/ActuatingProcedure  | sosa:ActuatingProcedure | Actuator | An actuator datasheet or an actuation method.
-| Sampling         | http://www.w3.org/ns/sosa/SamplingProcedure   | sosa:SamplingProcedure  | Sampler  | A sampler datasheet or a sampling method.
-| Other            | http://www.w3.org/ns/sosa/Procedure           | sosa:Procedure          | Platform | A platform datasheet or a carrying/navigation procedure.
-|====
-
-[#document-types,reftext='{table-caption} {counter:table-num}']
-.Document Types
-[width="100%",cols="5,10,5,15",options="header"]
-|====
-| *Document Type* | *URI* | *CURIE* | *Usage*
-| Datasheet       | #http://www.opengis.net/def/x-OGC/TBD/Datasheet#     | sml:Datasheet | The procedure is a datasheet that documents the capabilities and characteristics of the system.
-| Methodology     | #http://www.opengis.net/def/x-OGC/TBD/Methodology#   | sml:Methodology | The procedure describes the methodology implemented by the system (e.g. used by a human operator).
+| *Procedure Type*  | *URI* | *CURIE* | *Implemented By* | *Usage*
+| Observing         | http://www.w3.org/ns/sosa/ObservingProcedure  | sosa:ObservingProcedure | Sensor   | An observation method.
+| Actuating         | http://www.w3.org/ns/sosa/ActuatingProcedure  | sosa:ActuatingProcedure | Actuator | An actuation method.
+| Sampling          | http://www.w3.org/ns/sosa/SamplingProcedure   | sosa:SamplingProcedure  | Sampler  | A sampling method.
+| Other Procedure   | http://www.w3.org/ns/sosa/Procedure           | sosa:Procedure | Any System | Any other type of procedure or methodology.
+| Sensor Kind       | http://www.w3.org/ns/ssn-system/SensorKind    | ssn:SensorKind | Sensor   | A sensor datasheet.
+| Actuator Kind     | http://www.w3.org/ns/ssn-system/ActuatorKind  | ssn:ActuatorKind | Actuator | An actuator datasheet.
+| Sampler Kind      | http://www.w3.org/ns/ssn-system/SamplerKind   | ssn:SamplerKind  | Sampler  | A sampler datasheet.
+| Platform Kind     | http://www.w3.org/ns/ssn-system/PlatformKind  | ssn:PlatformKind | Platform  | A platform datasheet.
+| Other System Kind | http://www.w3.org/ns/ssn-system/SystemKind    | ssn:SystemKind | Any System | Any other system datasheet.
 |====
 
 ==== Location
@@ -90,36 +85,49 @@ A `Procedure` feature represents a datasheet or a methodology. It is thus a non-
 include::../requirements/procedure/req_location.adoc[]
 
 
-=== Canonical URL
 
-The CS API Standard requires that a `Procedure` resource has a canonical URL through which it can be retrieved independently of its membership to any collection.
+=== Procedure Canonical URL
+
+The CS API Standard requires that every `Procedure` resource has a canonical URL.
 
 include::../requirements/procedure/req_canonical_url.adoc[]
 
 
-=== Root Collection
 
-A root collection where all `Procedure` resources can be searched must be available at a CS API endpoint.
+[[clause-procedure-resources-endpoint]]
+=== Procedure Resources Endpoints
 
-include::../requirements/procedure/req_canonical_collection.adoc[]
+==== Definition
+
+A `Procedure` <<clause_api_endpoints,resources endpoint>> is an endpoint exposing a set of `Procedure` resources that can be further filtered using query parameters.
+
+include::../requirements/procedure/req_resources_endpoint.adoc[]
+
+<<clause-procedures-query-params>> defines additional query parameters applicable to `Procedure` resources endpoint.
+
+[[clause-canonical-procedure-rep]]
+==== Canonical Procedure Resources Endpoint
+
+The CS API Standard requires that a canonical `Procedure` resources endpoint, exposing all `Procedure` resources, be made available by the server.
+
+include::../requirements/procedure/req_canonical_endpoint.adoc[]
 
 
-=== Feature Collections
 
-`Procedure` feature collections are identified with the feature type `sosa:Procedure`.
+=== Procedure Feature Collections
 
-include::../requirements/procedure/req_collections_type.adoc[]
+Any number of feature collections containing `Procedure` features can be available at a CS API endpoint, but the server must at least expose one. Members of `Procedure` feature collections are identified with the feature type `sosa:Procedure`.
 
-`Procedure` resources can also be grouped into collections according to any arbitrary criteria. Any number of feature collections containing `Procedure` features can be available at a CS API endpoint.
-
-include::../requirements/procedure/req_collections_others.adoc[]
+`Procedure` resources can be grouped into collections according to any arbitrary criteria, as shown in the following examples.
 
 [example%unnumbered]
 ====
-*Examples*
+*Examples of Procedure Collections*
 
 - All weather station datasheets at URL `{api_root}/collections/wx_stations_datasheets`
 - All bird watching procedure at URL `{api_root}/collections/bird_watching_procedures`
 
-Note that a given procedure can be part of multiple collections at the same time.
+_Note that a given procedure can be part of multiple collections at the same time._
 ====
+
+include::../requirements/procedure/req_collections.adoc[]

@@ -11,11 +11,13 @@
     "command@id": {
       "description": "Local identifier of the command that this report applies to",
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "readOnly": true
     },
     "reportTime": {
       "description": "Time at which this report was generated. If omitted on creation, the server sets it to the time the request was received.",
-      "$ref": "../common/commonDefs.json#/definitions/TimeInstant"
+      "$ref": "../common/commonDefs.json#/definitions/TimeInstant",
+      "readOnly": true
     },
     "statusCode": {
       "description": "Current status code",
@@ -36,18 +38,15 @@
       "type": "string",
       "minLength": 1
     },
-    "result": {
-      "description": "Result of the command",
-      "oneOf": [
-        {
-          "title": "Inline data",
-          "type": "object"
-        },
-        {
-          "title": "Link to external data",
-          "$ref": "../common/commonDefs.json#/definitions/Link"
-        }
-      ]
+    "results": {
+      "description": "New result(s) of the command available at the time of the progress report (can be a partial result)",
+      "type": "array",
+      "items": {
+        "$ref": "commandResult.json"
+      }
     }
-  }
+  },
+  "required": [
+    "id", "command@id", "reportTime", "statusCode"
+  ]
 }
