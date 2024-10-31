@@ -22,10 +22,11 @@ jobs:
         with:
           args: 'bundle -d api/part1/openapi/openapi-connectedsystems-1.yaml -o openapi-connectedsystems-1.bundle.yaml'
 
-      - name: Redocly CLI Bundle Part 2
-        uses: fluximus-prime/redocly-cli-github-action@v1
-        with:
-          args: 'bundle -d api/part2/openapi/openapi-connectedsystems-2.yaml -o openapi-connectedsystems-2.bundle.yaml'
+      # blocked by https://github.com/opengeospatial/ogcapi-connected-systems/issues/81 
+      #- name: Redocly CLI Bundle Part 2
+      #  uses: fluximus-prime/redocly-cli-github-action@v1
+      #  with:
+      #    args: 'bundle -d api/part2/openapi/openapi-connectedsystems-2.yaml -o openapi-connectedsystems-2.bundle.yaml'
 
       - name: store generated bundles
         uses: actions/upload-artifact@v4
