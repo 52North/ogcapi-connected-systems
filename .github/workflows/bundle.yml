@@ -1,0 +1,23 @@
+# Simple workflow for bundling schemas into one
+name: Bundle schemas
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+jobs:
+  bundle_part1:
+    runs-on: ubuntu-latest
+    name: part1
+    steps:
+
+      # first checkout your code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # then use redocly-cli-github-action
+      - name: Redocly CLI Bundle
+        uses: fluximus-prime/redocly-cli-github-action@v1
+        with:
+          args: 'bundle -d api/part1/openapi/openapi-connectedsystems-1.yaml -o openapi-connectedsystems-1.bundle.yaml'
